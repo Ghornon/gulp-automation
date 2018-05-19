@@ -1,7 +1,7 @@
 {
     "name": "wp-gulp-automation",
     "version": "1.0.0",
-    "description": "wp-gulp-automation - gulp tasks config for wordpress",
+    "description": "Gulp tasks config for wordpress",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
