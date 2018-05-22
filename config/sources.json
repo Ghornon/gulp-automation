@@ -1,0 +1,52 @@
+{
+	"project": {
+		
+		"name": "Project name",
+		"path": "path"
+		
+	},
+	
+	"paths": {
+		
+		"__SRC": "src",
+		"__DIST": "assets",
+		
+		"src": {
+			
+			"js": "js",
+			"css": "css",
+			"img": "img"
+		},
+
+		"dist": {
+			
+			"js": "/",
+			"css": "/",
+			"img": "img"
+			
+		}
+		
+	}, 
+	
+	"files": {
+		
+		"js": [
+			"*.js", 
+			"!_*.js"
+		],
+		
+		"css": [
+			"*.scss", 
+			"!_*.scss"
+		],
+		
+		"img": [
+			"*.png", 
+			"*.jpg", 
+			"*.jpeg", 
+			"*.gif"
+		]
+		
+	}
+	
+}
