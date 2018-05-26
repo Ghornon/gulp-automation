@@ -14,7 +14,7 @@ const create = (answers) => {
 	Logger.info('Creating new project...');
 	
 	if (Projects.add(answers))
-		mkdir.make(Projects.find(answers.dirName));
+		mkdir.make(Projects.find(answers.name));
 	
 };
 
