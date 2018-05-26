@@ -8,7 +8,7 @@ const Logger = require('./modules/Logger.js');
 
 const plumberErrorHandler = { errorHandler: function(err) {    // Catch error.
     
-    plugins.notify.onError({                                           // Notify for error.
+    plugins.notify.onError({                                   // Notify for error.
         
         title: err.plugin,
         
@@ -48,15 +48,15 @@ gulp.task('img', getTask('img'));
 
 gulp.task('watch', function () {
     
-    livereload.listen();                                      // Start listen for live reload.
+    plugins.livereload.listen();                                      // Start listen for live reload.
     
-    gulp.watch(GetStream.input('css'), ['sass']);            // If a file changes, re-run 'sass'.
+    gulp.watch(Stream.input('css'), ['sass']);            // If a file changes, re-run 'sass'.
     
-    gulp.watch(GetStream.input('js'), ['lint', 'babel']);    // If a file changes, re-run 'lint', 'babel'.
+    gulp.watch(Stream.input('js'), ['lint', 'babel']);    // If a file changes, re-run 'lint', 'babel'.
     
-    gulp.watch(GetStream.input('img'), ['img']);             // If a file changes, re-run 'img'.
+    gulp.watch(Stream.input('img'), ['img']);             // If a file changes, re-run 'img'.
     
-    gulp.watch('./*.php', livereload.reload);                 // If a file changes, reload page.
+    gulp.watch(Stream.input('html'), plugins.livereload.reload);                 // If a file changes, reload page.
     
 });
 

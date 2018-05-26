@@ -28,10 +28,12 @@ const Stream = (() =>{
     };
     
     return {
-        input: input,
-        output: output
+        input,
+        output
     }
     
 })();
+
+//console.log(Stream.input('html'), Stream.output('css'));
 
 module.exports = Stream;

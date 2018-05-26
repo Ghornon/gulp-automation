@@ -6,14 +6,17 @@
 			
 			"js": "src/js",
 			"css": "src/css",
-			"img": "src/img"
+			"img": "src/img",
+			"html": "/"
+			
 		},
 
 		"dist": {
 			
 			"js": "assets",
 			"css": "assets",
-			"img": "assets/img"
+			"img": "assets/img",
+			"html": "/"
 			
 		}
 		
@@ -36,6 +39,11 @@
 			"*.jpg", 
 			"*.jpeg", 
 			"*.gif"
+		],
+				
+		"html": [
+			"*.html",
+			"*.php"
 		]
 		
 	}
