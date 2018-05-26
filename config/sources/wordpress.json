@@ -1,28 +1,19 @@
 {
-	"project": {
-		
-		"name": "Project name",
-		"path": "path"
-		
-	},
 	
 	"paths": {
 		
-		"__SRC": "src",
-		"__DIST": "assets",
-		
 		"src": {
 			
-			"js": "js",
-			"css": "css",
-			"img": "img"
+			"js": "src/js",
+			"css": "src/css",
+			"img": "src/img"
 		},
 
 		"dist": {
 			
-			"js": "/",
-			"css": "/",
-			"img": "img"
+			"js": "assets",
+			"css": "assets",
+			"img": "assets/img"
 			
 		}
 		

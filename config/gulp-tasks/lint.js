@@ -1,17 +1,19 @@
-module.exports = () => {
-	
+const eslintrc = require('../.eslintrc.json');
+
+module.exports = (gulp, plugins, Stream, exception) => {
+
 	return () => {
-    
-		return gulp.src(Src.input('js'))                            // Create a stream in the directory where our js files are located.
 
-			.pipe(plumber(plumberErrorHandler))                     // Throw exception if exist.
+		gulp.src(Stream.input('js')) // Create a stream in the directory where our js files are located.
 
-			.pipe(eslint())                                         // Initialize eslint.
+			.pipe(plugins.plumber(exception)) // Throw exception if exist.
 
-			.pipe(eslint.format())                                  // Write errors in console.
+			.pipe(plugins.eslint(eslintrc)) // Initialize eslint.
 
-			.pipe(eslint.failAfterError());                         // Write errors count in console.
-		
+			.pipe(plugins.eslint.format()) // Write errors in console.
+
+			.pipe(plugins.eslint.failAfterError()); // Write errors count in console.
+
 	};
-	
+
 };

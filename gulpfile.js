@@ -1,42 +1,32 @@
  /* Define some plugins */
 const gulp = require('gulp');
-const sass = require('gulp-sass');
-const cssnano = require('gulp-cssnano');
-const autoprefixer = require('gulp-autoprefixer');
-const sourcemaps = require('gulp-sourcemaps');
-const babel = require('gulp-babel');
-const concat = require('gulp-concat');
-const uglify = require('gulp-uglify');
-const livereload = require('gulp-livereload');
-const plumber = require('gulp-plumber');
-const notify = require('gulp-notify');
-const imagemin = require('gulp-imagemin');
-const eslint = require('gulp-eslint');
-const { Src: Src } = require('./config/Src.js');
-
-/* Tasks getter */
-
-const getTask = (task) => {
-
-	const get = require(`./config/gulp-tasks/${task}.js`);
-	
-	return get;
-	
-};
+const plugins = require('gulp-load-plugins')();
+const Stream = require('./modules/Stream.js');
+const Logger = require('./modules/Logger.js');
 
 /* Error Handler */
 
 const plumberErrorHandler = { errorHandler: function(err) {    // Catch error.
     
-    notify.onError({                                           // Notify for error.
+    plugins.notify.onError({                                           // Notify for error.
         
         title: err.plugin,
         
-        message:  '\n<%= error.message %>'
+        message: Logger.error(err.message)
         
     })(err);
     
 }};
+
+/* Tasks getter */
+
+const getTask = (task) => {
+
+	const get = require(`./config/gulp-tasks/${task}.js`)(gulp, plugins, Stream, plumberErrorHandler);
+	
+	return get;
+	
+};
 
 /* Compile sass. */
 
@@ -60,11 +50,11 @@ gulp.task('watch', function () {
     
     livereload.listen();                                      // Start listen for live reload.
     
-    gulp.watch(Src.input('css'), ['sass']);                   // If a file changes, re-run 'sass'.
+    gulp.watch(GetStream.input('css'), ['sass']);            // If a file changes, re-run 'sass'.
     
-    gulp.watch(Src.input('js'), ['lint', 'babel']);           // If a file changes, re-run 'lint', 'babel'.
+    gulp.watch(GetStream.input('js'), ['lint', 'babel']);    // If a file changes, re-run 'lint', 'babel'.
     
-    gulp.watch(Src.input('img'), ['img']);                    // If a file changes, re-run 'img'.
+    gulp.watch(GetStream.input('img'), ['img']);             // If a file changes, re-run 'img'.
     
     gulp.watch('./*.php', livereload.reload);                 // If a file changes, reload page.
     

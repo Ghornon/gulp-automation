@@ -1,29 +1,33 @@
-module.exports = () => {
-	
+module.exports = (gulp, plugins, Stream, exception) => {
+
 	return () => {
-    
-		return gulp.src(Src.input('css'))                           // Create a stream in the directory where our Sass files are located.
 
-			.pipe(sourcemaps.init())                                // Initialize source map.
+		gulp.src(Stream.input('css')) // Create a stream in the directory where our Sass files are located.
 
-			.pipe(plumber(plumberErrorHandler))                     // Throw exception if exist.
+			.pipe(plugins.sourcemaps.init()) // Initialize source map.
 
-			.pipe(sass())                                           // Compile Sass into style.css.
+			.pipe(plugins.plumber(exception)) // Throw exception if exist.
 
-			.pipe(autoprefixer({                                    // Add css prefixes.
+			.pipe(plugins.sass()) // Compile Sass into style.css.
+
+			.pipe(plugins.autoprefixer({ // Add css prefixes.
 				browsers: ['last 2 versions'],
 				cascade: true
 			}))
 
-			.pipe(cssnano({discardComments: {removeAll: true}}))    // Minify and optimize.
+			.pipe(plugins.cssnano({
+				discardComments: {
+					removeAll: true
+				}
+			})) // Minify and optimize.
 
-			.pipe(concat('styles.css'))                             // Concatenate all css files into styles.css. 
+			.pipe(plugins.concat('styles.css')) // Concatenate all css files into styles.css. 
 
-			.pipe(sourcemaps.write('.'))                            // Write source map.
+			.pipe(plugins.sourcemaps.write('.')) // Write source map.
 
-			.pipe(gulp.dest(Src.output('css')))                     // Write styles.css to the project output directory.
+			.pipe(gulp.dest(Stream.output('css'))) // Write styles.css to the project output directory.
 
-			.pipe(livereload());
+			.pipe(plugins.livereload());
 	};
-	
+
 };

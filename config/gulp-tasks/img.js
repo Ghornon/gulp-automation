@@ -1,12 +1,12 @@
-module.exports = () => {
-	
-	return () => {
-    
-		return gulp.src(Src.input('img'))                           // Create a stream in the directory where our img files are located.
-    
-			.pipe(plumber(plumberErrorHandler))                     // Throw exception if exist.
+module.exports = (gulp, plugins, Stream, exception) => {
 
-			.pipe(imagemin({                                        // Optimize images.
+	return () => {
+
+		gulp.src(Stream.input('img')) // Create a stream in the directory where our img files are located.
+
+			.pipe(plugins.plumber(exception)) // Throw exception if exist.
+
+			.pipe(plugins.imagemin({ // Optimize images.
 
 				optimizationLevel: 7,
 
@@ -14,8 +14,8 @@ module.exports = () => {
 
 			}))
 
-			.pipe(gulp.dest(Src.output('img')));                    // Write images to the project output directory.
-		
+			.pipe(gulp.dest(Stream.output('img'))); // Write images to the project output directory.
+
 	};
-	
+
 };

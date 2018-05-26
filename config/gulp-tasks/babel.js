@@ -1,27 +1,29 @@
-module.exports = () => {
-	
+module.exports = (gulp, plugins, Stream, exception) => {
+
 	return () => {
-    
-		return gulp.src(Src.input('js'))                            // Create a stream in the directory where our js files are located.
-    
-			.pipe(sourcemaps.init())                                // Initialize source map.
 
-			.pipe(plumber(plumberErrorHandler))                     // Throw exception if exist.
+		gulp.src(Stream.input('js')) // Create a stream in the directory where our js files are located.
 
-			.pipe(babel({                                           // Compile es6 to es5.
-				presets: ['es2015']
-			}))
+			.pipe(plugins.sourcemaps.init()) // Initialize source map.
 
-			.pipe(concat('bundle.js'))                              // Concatenate all js files into bundle.js.
+			.pipe(plugins.plumber(exception)) // Throw exception if exist.
 
-			.pipe(uglify())                                         // Minify and optimize.
+			.pipe(plugins.babel({
 
-			.pipe(sourcemaps.write('.'))                            // Write source map.
+				presets: ['babel-preset-es2015'].map(require.resolve)
 
-			.pipe(gulp.dest(Src.output('js')))                      // Write bundle.js to the project output directory.
+			})) // Compile es6 to es5.
 
-			.pipe(livereload());
-		
+			.pipe(plugins.concat('bundle.js')) // Concatenate all js files into bundle.js.
+
+			.pipe(plugins.uglify()) // Minify and optimize.
+
+			.pipe(plugins.sourcemaps.write('.')) // Write source map.
+
+			.pipe(gulp.dest(Stream.output('js'))) // Write bundle.js to the project output directory.
+
+			.pipe(plugins.livereload());
+
 	};
-	
+
 };

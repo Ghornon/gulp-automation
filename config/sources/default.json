@@ -1,0 +1,43 @@
+{
+	
+	"paths": {
+		
+		"src": {
+			
+			"js": "src/js",
+			"css": "src/css",
+			"img": "src/img"
+		},
+
+		"dist": {
+			
+			"js": "dist/js",
+			"css": "dist/css",
+			"img": "dist/img"
+			
+		}
+		
+	}, 
+	
+	"files": {
+		
+		"js": [
+			"*.js", 
+			"!_*.js"
+		],
+		
+		"css": [
+			"*.scss", 
+			"!_*.scss"
+		],
+		
+		"img": [
+			"*.png", 
+			"*.jpg", 
+			"*.jpeg", 
+			"*.gif"
+		]
+		
+	}
+	
+}
