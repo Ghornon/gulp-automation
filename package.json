@@ -1,57 +1,58 @@
 {
-  "name": "wp-gulp-automation",
-  "version": "2.0.0",
-  "description": "Gulp tasks config for wordpress",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint",
-    "automation": "node ./automation.js"
-  },
-  "keywords": [
-    "wordpress",
-    "theme",
-    "gulp",
-    "automation"
-  ],
-  "author": "Szymon \"Button\" Guzik",
-  "license": "MIT",
-  "dependencies": {
-    "npm": "^6.0.1"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "chalk": "^2.4.1",
-    "commander": "^2.15.1",
-    "eslint": "^4.19.1",
-    "eslint-config-google": "^0.9.1",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^5.0.0",
-    "gulp-babel": "^7.0.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-cssnano": "^2.1.2",
-    "gulp-eslint": "^4.0.2",
-    "gulp-imagemin": "^4.1.0",
-    "gulp-livereload": "^3.8.1",
-    "gulp-load-plugins": "^1.5.0",
-    "gulp-notify": "^3.2.0",
-    "gulp-plumber": "^1.2.0",
-    "gulp-sass": "^3.1.0",
-    "gulp-sourcemap": "^1.0.1",
-    "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.0",
-    "inquirer": "^5.2.0",
-    "mkdirp": "^0.5.1",
-    "shelljs": "^0.8.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Ghornon/wp-gulp-automation.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Ghornon/wp-gulp-automation/issues"
-  },
-  "homepage": "https://github.com/Ghornon/wp-gulp-automation#readme"
+	"name": "wp-gulp-automation",
+	"version": "2.0.0",
+	"description": "Gulp tasks config for wordpress",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "eslint **/**.js -c ./config/.eslintrc.json --fix",
+		"automation": "node ./automation.js"
+	},
+	"keywords": [
+		"wordpress",
+		"theme",
+		"gulp",
+		"automation"
+	  ],
+	"author": "Szymon \"Button\" Guzik",
+	"license": "MIT",
+	"dependencies": {
+		"npm": "^6.0.1"
+	},
+	"devDependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-core": "^6.26.0",
+		"babel-preset-es2015": "^6.24.1",
+		"chalk": "^2.4.1",
+		"commander": "^2.15.1",
+		"eslint": "^4.19.1",
+		"eslint-config-google": "^0.9.1",
+		"figlet": "^1.2.0",
+		"gulp": "^3.9.1",
+		"gulp-autoprefixer": "^5.0.0",
+		"gulp-babel": "^7.0.1",
+		"gulp-concat": "^2.6.1",
+		"gulp-cssnano": "^2.1.2",
+		"gulp-eslint": "^4.0.2",
+		"gulp-imagemin": "^4.1.0",
+		"gulp-livereload": "^3.8.1",
+		"gulp-load-plugins": "^1.5.0",
+		"gulp-notify": "^3.2.0",
+		"gulp-plumber": "^1.2.0",
+		"gulp-sass": "^3.1.0",
+		"gulp-sourcemap": "^1.0.1",
+		"gulp-sourcemaps": "^2.6.4",
+		"gulp-uglify": "^3.0.0",
+		"inquirer": "^5.2.0",
+		"mkdirp": "^0.5.1",
+		"shelljs": "^0.8.2"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Ghornon/wp-gulp-automation.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Ghornon/wp-gulp-automation/issues"
+	},
+	"homepage": "https://github.com/Ghornon/wp-gulp-automation#readme"
 }

@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const mkdirp = require('mkdirp');
-const { Workspace, Projects } = require('./config.js');
+const { Workspace } = require('./config.js');
 const Logger = require('./Logger.js');
 
 const Directories = (() => {
@@ -19,7 +19,7 @@ const Directories = (() => {
 				mkdirp(dir[i], function (err) {
 
 					if (err)
-						Logger.error(err)
+						Logger.error(err);
 					else
 						Logger.success(`${dir[i]} created.`);
 

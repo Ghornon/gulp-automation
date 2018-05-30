@@ -7,30 +7,30 @@ const Stream = (() =>{
     
 	const current = Workspace.getObject(Workspace.getIndex());
 	
-	const projectPath = path.join('../..', current.dirName);
+	const projectPath = path.join(__dirname, '../..', current.dirName);
 	const Paths = current.paths;
 	const Files = current.files;
 	
-    const input = (type) => {                                   // Return inputs files array.
+	const input = (type) => {                                   // Return inputs files array.
 		
-        return Files[type].map((item)=>{
-            return path.normalize(path.join(__dirname, projectPath, Paths.src[type], item));
-        });
+		return Files[type].map((item)=>{
+			return path.normalize(path.join(projectPath, Paths.src[type], item));
+		});
         
-    };
+	};
     
-    const output = (type) => {                                  // Return outputs directory.
+	const output = (type) => {                                  // Return outputs directory.
         
-        const dir = path.normalize(path.join(__dirname, projectPath, Paths.dist[type]));
+		const dir = path.normalize(path.join(projectPath, Paths.dist[type]));
 		
-        return dir;
+		return dir;
         
-    };
+	};
     
-    return {
-        input,
-        output
-    }
+	return {
+		input,
+		output
+	};
     
 })();
 

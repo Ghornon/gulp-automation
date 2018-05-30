@@ -2,8 +2,6 @@
 
 const program = require('commander');
 const { prompt } = require('inquirer');
-const fs = require('fs');
-const path = require('path');
 const mkdir = require('./modules/Directories.js');
 const Logger = require('./modules/Logger.js');
 const { Workspace, Projects } = require('./modules/config.js');
@@ -79,10 +77,10 @@ program
 			name: 'project',
 			message: 'Select project:',
 			choices: Projects.get().map((element) => {
-				return element.name
+				return element.name;
 			}),
 			default: Workspace.getIndex()
-		}).then(answers => select(answers));
+		}).then((answers) => select(answers));
 	});
 
 /* Remove prompt */
@@ -97,9 +95,9 @@ program
 			name: 'project',
 			message: 'Select project to remove:',
 			choices: Projects.get().map((element) => {
-				return element.name
+				return element.name;
 			})
-		}).then(answers => remove(answers));
+		}).then((answers) => remove(answers));
 	});
 
 /* Run prompt */

@@ -10,7 +10,7 @@ const Paths = {
 	"workspace": path.join(__dirname, '../config/workspace.json'),
 	"projects": path.join(__dirname, '../config/projects.json'),
 	"sources": path.join(__dirname, '../config/sources/')
-}
+};
 
 /* Sources */
 
@@ -18,11 +18,15 @@ const Sources = (() => { //In progress
 	
 	const get = (name) => {
 		
+		const sources = require(path.join(Paths.sources, name));
+		
+		return sources;
+		
 	};
 	
 	const add = (name, sources) => {
 
-		const file = JSON.stringify(sources, null, 4)
+		const file = JSON.stringify(sources, null, 4);
 
 		fs.writeFileSync(path.join(Paths.sources, name), file);
 		
@@ -48,7 +52,7 @@ const Workspace = (() => {
 			index = workspace.index;
 		
 		const project = projects[index];
-		const sources = require(path.join(Paths.sources, project.sourcesFile));
+		const sources = sources.get(project.sourcesFile);
 		
 		return Object.assign({}, project, sources);
 		
@@ -62,7 +66,7 @@ const Workspace = (() => {
 				
 				workspace.index = index;
 				
-				const file = JSON.stringify(workspace, null, 4)
+				const file = JSON.stringify(workspace, null, 4);
 
 				fs.writeFileSync(Paths.workspace, file);
 
@@ -122,12 +126,12 @@ const Projects = (() => {
 		
 			if (element.name == answers.name) {
 				
-				Logger.error('Project with this name already exists!')
+				Logger.error('Project with this name already exists!');
 				return true;
 				
 			} else if (element.dirName == answers.dirName){
 				
-				Logger.error('Project with this directory name already exists!')
+				Logger.error('Project with this directory name already exists!');
 				return true;
 				
 			} else {
@@ -142,7 +146,7 @@ const Projects = (() => {
 
 			projects.push(answers);
 
-			const file = JSON.stringify(projects, null, 4)
+			const file = JSON.stringify(projects, null, 4);
 
 			fs.writeFileSync(Paths.projects, file);
 			
@@ -164,7 +168,7 @@ const Projects = (() => {
 			
 			projects.splice(index, 1);
 			
-			const file = JSON.stringify(projects, null, 4)
+			const file = JSON.stringify(projects, null, 4);
 
 			fs.writeFileSync(Paths.projects, file);
 
@@ -190,12 +194,12 @@ const Projects = (() => {
 		
 				if (element.name == obj.name) {
 
-					Logger.error('Project with this name already exists!')
+					Logger.error('Project with this name already exists!');
 					return true;
 
 				} else if (element.dirName == obj.dirName){
 
-					Logger.error('Project with this directory name already exists!')
+					Logger.error('Project with this directory name already exists!');
 					return true;
 
 				} else {
@@ -212,7 +216,7 @@ const Projects = (() => {
 				projects[index].dirName = obj.dirName || projects[index].dirName;
 				projects[index].sourcesFile = obj.sourcesFile || projects[index].sourcesFile;
 
-				const file = JSON.stringify(projects, null, 4)
+				const file = JSON.stringify(projects, null, 4);
 
 				fs.writeFileSync(Paths.projects, file);
 
@@ -226,7 +230,7 @@ const Projects = (() => {
 			
 		} else {
 			
-			Logger.error("Cannot edit project!")
+			Logger.error("Cannot edit project!");
 			
 			return false;
 			
@@ -249,5 +253,5 @@ const Projects = (() => {
 module.exports = {
 	Workspace,
 	Projects
-}
+};
 
