@@ -1,12 +1,15 @@
-[
-    {
-        "name": "Default",
-        "dirName": "default",
-        "sourcesFile": "default.json"
-    },
-    {
-        "name": "BbPress",
-        "dirName": "bbpress",
-        "sourcesFile": "wordpress.json"
-    }
-]
+{
+	"projects": [
+		{
+				"name": "Default",
+				"dirName": "default",
+				"sourcesFile": "default.json"
+		},
+			{
+				"name": "BbPress",
+				"dirName": "bbpress",
+				"sourcesFile": "wordpress.json"
+		}
+	],
+	"workspace": "Default"
+}

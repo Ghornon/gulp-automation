@@ -4,7 +4,7 @@ const program = require('commander');
 const { prompt } = require('inquirer');
 const mkdir = require('./modules/Directories.js');
 const Logger = require('./modules/Logger.js');
-const { Workspace, Projects } = require('./modules/config.js');
+const { Sources, Workspace, Project } = require('./modules/config.js');
 const shell = require('shelljs');
 
 const create = (answers) => {

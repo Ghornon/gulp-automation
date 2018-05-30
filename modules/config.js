@@ -1,37 +1,343 @@
 'use strict';
 
-const workspace = require('../config/workspace.json');
-const projects = require('../config/projects.json');
 const Logger = require('./Logger.js');
 const fs = require('fs');
 const path = require('path');
+const Interface = require('./Interface.js');
 
 const Paths = {
-	"workspace": path.join(__dirname, '../config/workspace.json'),
-	"projects": path.join(__dirname, '../config/projects.json'),
-	"sources": path.join(__dirname, '../config/sources/')
+	projects: path.join(__dirname, '../config/projects.json'),
+	sources: path.join(__dirname, '../config/sources/')
 };
+
+const projectsFile = require(Paths.projects);
 
 /* Sources */
 
 const Sources = (() => { //In progress
 	
+	const ISources = new Interface('ISources', [], ['paths', 'files']);
+	const IPaths = new Interface('IPaths', [], ['src', 'dist']);
+	
 	const get = (name) => {
 		
-		const sources = require(path.join(Paths.sources, name));
-		
-		return sources;
+		try {
+			
+			const filePath = path.join(Paths.sources, name);
+			
+			if (!fs.existsSync(filePath))
+				throw new Error(`Cannot find file named ${name}!`);
+				
+			const sources = require(filePath);
+			return sources;
+			
+		} catch (Error) {
+			
+			Logger.error(Error.message);
+			
+		}
 		
 	};
 	
 	const add = (name, sources) => {
 
-		const file = JSON.stringify(sources, null, 4);
+		try {
+			
+			ISources.isImplementedBy(sources);
+			IPaths.isImplementedBy(sources.paths);
+			
+			const filePath = path.join(Paths.sources, name);
+			
+			if (fs.existsSync(filePath))
+				throw new Error("This file name has already existed!");
+			
+			const file = JSON.stringify(sources, null, 4);
+			
+			fs.writeFileSync(filePath, file);
+			
+			Logger.success("Successfully added new sources file.");
+			
+			
+		} catch (Error) {
+			
+			Logger.error(Error.message);
+			
+		}
 
-		fs.writeFileSync(path.join(Paths.sources, name), file);
+	};
+	
+	const edit = (name, sources) => {
+
+		try {
+			
+			ISources.isImplementedBy(sources);
+			IPaths.isImplementedBy(sources.paths);
+			
+			const filePath = path.join(Paths.sources, name);
+			
+			if (!fs.existsSync(filePath))
+				throw new Error(`Cannot find file named ${name}!`);
+			
+			const file = JSON.stringify(sources, null, 4);
+			
+			fs.writeFileSync(filePath, file);
+			
+			Logger.success("Successfully edited sources file.");
+			
+			
+		} catch (Error) {
+			
+			Logger.error(Error.message);
+			
+		}
+
+	};
+	
+	const remove = (name) => {
+
+		try {
+			
+			const filePath = path.join(Paths.sources, name);
+			
+			if (!fs.existsSync(filePath))
+				throw new Error(`Cannot find file named ${name}!`);
+				
+			fs.unlinkSync(filePath);
+			
+			Logger.success("Successfully removed sources file.");
+			
+			
+		} catch (Error) {
+			
+			Logger.error(Error.message);
+			
+		}
+
+	};
+	
+	const test = () => {
 		
-		Logger.success('Sources file created!');
+		ISources.isImplementedBy(d);
+		IPaths.isImplementedBy(d.paths);
+		
+	};
+	
+	return {
+		get,
+		add,
+		edit, 
+		remove
+	};
+	
+})();
 
+/* Project */
+
+const Project = (() => {
+	
+	const IProject = new Interface('IProject', [], ['name', 'dirName', 'sourcesFile']);
+	
+	this.projects = projectsFile.projects;
+	
+	const _checkIndex = (index) => {
+		
+		if (typeof index === 'number') {
+			
+			if (index < 0 && index >= this.projects.length) {
+				
+				throw new Error("Bad index number!");
+				
+			} 
+				
+			
+		} else {
+			
+			throw new Error("Index must be a number!");
+			
+		}
+		
+	};
+	
+	const _checkName = (name) => {
+		
+		if (typeof name === 'string') {
+			
+			const obj = this.projects.find((element) => { 
+		
+				return element.name == name;
+
+			});
+			
+			if (!obj) {
+				
+				throw new Error(`Cannot find project named ${name}!`);
+				
+			}
+			
+		} else {
+			
+			throw new Error("The name must be a string!");
+			
+		}
+		
+	};
+	
+	const _writeFile = (msg) => {
+		
+		try {
+			
+			_checkName(Workspace.name);
+			
+			const projects = { projects: this.projects };
+			const workspace = { workspace: Workspace.name };
+			const obj =  Object.assign({}, projects, workspace);
+			const file = JSON.stringify(obj, null, 4);
+			
+			fs.writeFileSync(Paths.projects, file);
+			
+			Logger.success(msg);
+			
+			//			console.log(file);
+
+
+		} catch (Error) {
+
+			Logger.error(Error.message);
+
+		}
+		
+	};
+	
+	const get = (index) => {
+		
+		try {
+			
+			_checkIndex(index);
+			
+			const project = this.projects[index];
+
+			return project;
+
+		} catch (Error) {
+
+			Logger.error(Error.message);
+
+		}
+		
+	};
+	
+	const findIndex = (name) => {
+		
+		try {
+			
+			_checkName(name);
+			
+			const index = this.projects.findIndex((element) => { 
+
+				return element.name == name;
+
+			});
+
+			return index;
+
+		} catch (Error) {
+
+			Logger.error(Error.message);
+
+		}
+		
+	};
+	
+	const findName = (index) => {
+		
+		try {
+			
+			_checkIndex(index);
+
+			return this.projects[index].name;
+
+		} catch (Error) {
+
+			Logger.error(Error.message);
+
+		}
+		
+	};
+	
+	const add = (obj) => {
+		
+		try {
+			
+			IProject.isImplementedBy(obj);
+			
+			const result = this.projects.find((element) => {
+				
+				return (element.name == obj.name) || (element.dirName == obj.dirName);
+				
+			});
+			
+			if (result) {
+				
+				throw new Error("This name or directory name has already existed!");
+				
+			}
+
+			this.projects.push(obj);
+			_writeFile("Successfully added new project.");
+			
+		} catch (Error) {
+
+			Logger.error(Error.message);
+
+		}	
+		
+	};
+	
+	const edit = (index, obj) => {
+		
+		try {
+			
+			_checkIndex(index);
+			IProject.isImplementedBy(obj);
+			
+			this.projects[index] = obj;
+			
+			_writeFile("Successfully edited project.");
+			
+		} catch (Error) {
+
+			Logger.error(Error.message);
+
+		}	
+		
+	};
+	
+	const remove = (index) => {
+		
+		try {
+			
+			_checkIndex(index);
+			
+			this.projects.splice(index, 1);
+			
+			_writeFile("Successfully removed project.");
+			
+		} catch (Error) {
+
+			Logger.error(Error.message);
+
+		}	
+		
+	};
+	
+	return {
+		projects: this.projects,
+		get,
+		findIndex,
+		findName,
+		add,
+		edit,
+		remove
 	};
 	
 })();
@@ -40,210 +346,51 @@ const Sources = (() => { //In progress
 
 const Workspace = (() => {
 	
-	const getIndex = () => {
-		
-		return workspace.index;
-		
-	};
+	this.name = projectsFile.workspace;
+	this.index = Project.findIndex(this.name);
 	
-	const getObject = (index) => {
+	const get = (index) => {
 		
-		if (index === undefined)
-			index = workspace.index;
-		
-		const project = projects[index];
-		const sources = sources.get(project.sourcesFile);
-		
-		return Object.assign({}, project, sources);
+		const project = Project.get(index);
+		const sources = Sources.get(project.sourcesFile);
+
+		return Object.assign({}, project, sources);	
 		
 	};
 	
 	const set = (index) => {
 		
-		if (index !== undefined) {
+		try {
 			
-			if (index >= 0 && index < projects.length) {
-				
-				workspace.index = index;
-				
-				const file = JSON.stringify(workspace, null, 4);
-
-				fs.writeFileSync(Paths.workspace, file);
-
-				Logger.success('Workspace seted!');
-				
-			} else {
-				
-				Logger.error("Cannot set workspace!");
-				
-			}
+			this.name = Project.findName(index);
+			this.index = index;
 			
+			const projects = { projects: Project.projects };
 			
-		} else {
+			const workspace = { workspace: this.name };
 			
-			Logger.error("Cannot set workspace!");
+			const obj = Object.assign({}, projects, workspace);
 			
-		}		
-		
-	};
-	
-	return {
-		getIndex,
-		getObject,
-		set
-	};
-	
-})();
-
-/* Projects */
-
-const Projects = (() => {
-	
-	const get = () => {
-		
-		return projects;
-		
-	};
-	
-	const find = (name) => {
-		
-		let id = 0;
-	
-		projects.filter((element, index) => {
-
-			if (element.name == name) 
-				id = index;
-
-		});
-		
-		return id;
-		
-	};
-	
-	const add = (answers) => {
-		
-		const result = Projects.get().filter((element) => {
-		
-			if (element.name == answers.name) {
-				
-				Logger.error('Project with this name already exists!');
-				return true;
-				
-			} else if (element.dirName == answers.dirName){
-				
-				Logger.error('Project with this directory name already exists!');
-				return true;
-				
-			} else {
-				
-				return false;
-				
-			}
-
-		});
-
-		if (result.length == 0) {
-
-			projects.push(answers);
-
-			const file = JSON.stringify(projects, null, 4);
-
+			const file = JSON.stringify(obj, null, 4);
+			
 			fs.writeFileSync(Paths.projects, file);
+
+			//			console.log(file);
 			
-			Logger.success('Project added!');
-			
-			Workspace.set(0);
-			
-			return true;
+
+		} catch (Error) {
+
+			Logger.error(Error.message);
 
 		}
 		
-		return false;
-		
-	};
-	
-	const remove = (index) => {
-		
-		if (index !== undefined) {
-			
-			projects.splice(index, 1);
-			
-			const file = JSON.stringify(projects, null, 4);
-
-			fs.writeFileSync(Paths.projects, file);
-
-			Logger.success('Project removed!');
-			
-			return true;
-			
-		} else {
-			
-			Logger.error("Cannot remove project!");
-			
-			return false;
-			
-		}		
-		
-	};
-	
-	const edit = (index, obj) => {
-		
-		if (index !== undefined) {
-			
-			const result = projects.filter((element) => {
-		
-				if (element.name == obj.name) {
-
-					Logger.error('Project with this name already exists!');
-					return true;
-
-				} else if (element.dirName == obj.dirName){
-
-					Logger.error('Project with this directory name already exists!');
-					return true;
-
-				} else {
-
-					return false;
-
-				}
-
-			});
-
-			if (result.length == 0) {
-
-				projects[index].name = obj.name || projects[index].name;
-				projects[index].dirName = obj.dirName || projects[index].dirName;
-				projects[index].sourcesFile = obj.sourcesFile || projects[index].sourcesFile;
-
-				const file = JSON.stringify(projects, null, 4);
-
-				fs.writeFileSync(Paths.projects, file);
-
-				Logger.success('Project edited!');
-				
-				return true;
-				
-			}
-			
-			return false;
-			
-		} else {
-			
-			Logger.error("Cannot edit project!");
-			
-			return false;
-			
-		}		
-		
 	};
 	
 	return {
+		index: this.index,
+		name: this.name,
 		get,
-		find,
-		add,
-		remove,
-		edit
+		set
 	};
 	
 })();
@@ -251,7 +398,7 @@ const Projects = (() => {
 /* Exports */
 
 module.exports = {
+	Sources,
 	Workspace,
-	Projects
+	Project
 };
-

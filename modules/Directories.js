@@ -34,9 +34,9 @@ const Directories = (() => {
 	const make = (index) => {
 
 		if (index === undefined)
-			index = Workspace.getIndex();
+			index = Workspace.index;
 
-		const current = Workspace.getObject(index);
+		const current = Workspace.get(index);
 
 		const projectPath = path.join('../..', current.dirName);
 		const Paths = current.paths;
