@@ -6,6 +6,7 @@ const Logger = require('./modules/Logger.js');
 const { Sources, Workspace, Project } = require('./modules/config.js');
 const Interface = require('./modules/Interface.js');
 const shell = require('shelljs');
+const chalk = require('chalk');
 
 const run = () => {
 
@@ -89,7 +90,7 @@ class ProjectPrompt extends Chooser {
 				return element.name;
 				
 			}),
-			default: Workspace.name
+			default: Workspace.getName()
 			
 		}).then((answers) => {
 			
@@ -211,7 +212,49 @@ class ProjectPrompt extends Chooser {
 
 };
 
+class SourcesPrompt extends Chooser {
+
+	constructor(name, message, choices) {
+		super(name, message, choices);
+	}
+
+	list() {
+
+		const files = Sources.list();
+		const usedFiles = Project.projects.map((element)=>{
+			return element.sourcesFile;
+		});
+
+		console.log('\n',chalk.cyan.bold("Used by the application"), '\t', "Not used");
+		console.log("-----------------------------------------\n");
+
+		for (let i = 0; i < files.length; i++) {
+
+			const type = usedFiles.filter((element) => {
+				return element == files[i];
+			});
+
+			if (type.length != 0) {
+				console.log(i + 1 + ') ' + chalk.cyan.bold(files[i]));
+			} else {
+				console.log(i + 1 + ') ' + files[i]);
+			}
+
+		}
+
+		console.log('\n');
+
+	}
+
+	create() {
+
+	}
+
+};
+
 /* Objects */
+
+// Project
 
 const project = new ProjectPrompt('Project', 'What do you want to do with the project?', [
 
@@ -234,7 +277,40 @@ const project = new ProjectPrompt('Project', 'What do you want to do with the pr
 
 ]);
 
+// Sources
+
+
+const sources = new SourcesPrompt('Sources', 'What do you want to do with the sources files?', [
+
+	{
+		text: 'List sources files names',
+		callback: 'list'
+	}
+
+]);
+
+// Test
+
+const test = new ProjectPrompt('test', 'test msg', [
+	
+	{
+		text: 'Select',
+		callback: 'select'
+	},
+	{
+		text: 'Test',
+		callback: 'test'
+	}
+
+]);
+
 /* Create prompt */
+
+program
+	.command('test')
+	.alias('t')
+	.description('Test options')
+	.action(test.action());
 
 program
 	.command('project')
@@ -242,13 +318,11 @@ program
 	.description('Project options')
 	.action(project.action());
 
-const test = new ProjectPrompt('test', 'test msg', [{text: 'Select', callback: 'select'}, {text: 'Test', callback: 'test'}]);
-
 program
-	.command('test')
-	.alias('t')
-	.description('Test options')
-	.action(test.action());	
+	.command('sources')
+	.alias('s')
+	.description('Sources options')
+	.action(sources.action());
 
 program
 	.command('run')

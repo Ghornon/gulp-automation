@@ -20,6 +20,18 @@ const Sources = (() => { //In progress
 	const ISources = new Interface('ISources', [], ['paths', 'files']);
 	const IPaths = new Interface('IPaths', [], ['src', 'dist']);
 	
+	const list = () => {
+
+		const files = [];
+
+		fs.readdirSync(Paths.sources).forEach(file => {
+			files.push(file);
+		});
+
+		return files;
+
+	};
+
 	const get = (name) => {
 		
 		try {
@@ -117,6 +129,7 @@ const Sources = (() => { //In progress
 	};
 	
 	return {
+		list,
 		get,
 		add,
 		edit, 
@@ -137,7 +150,7 @@ const Project = (() => {
 		
 		if (typeof index === 'number') {
 			
-			if (index < 0 && index >= this.projects.length) {
+			if (index < 0 || index >= this.projects.length) {
 				
 				throw new Error("Bad index number!");
 				
@@ -156,12 +169,12 @@ const Project = (() => {
 		
 		if (typeof name === 'string') {
 			
-			let obj = this.projects.find((element) => {
+			const obj = this.projects.find((element) => {
 		
 				return element.name == name;
 
 			});
-			
+
 			if (!obj) {
 				
 				throw new Error(`Cannot find project named ${name}!`);
@@ -180,10 +193,10 @@ const Project = (() => {
 		
 		try {
 			
-			_checkName(Workspace.name);
-			
+			Workspace.check();
+
 			const projects = { projects: this.projects };
-			const workspace = { workspace: Workspace.name };
+			const workspace = { workspace: Workspace.getName() };
 			const obj =  Object.assign({}, projects, workspace);
 			const file = JSON.stringify(obj, null, 4);
 			
@@ -191,7 +204,7 @@ const Project = (() => {
 			
 			Logger.success(msg);
 			
-			//			console.log(file);
+			// console.log(file);
 
 
 		} catch (Error) {
@@ -311,7 +324,6 @@ const Project = (() => {
 		try {
 			
 			_checkIndex(index);
-			
 			this.projects.splice(index, 1);
 			
 			_writeFile("Successfully removed project.");
@@ -341,24 +353,60 @@ const Project = (() => {
 const Workspace = (() => {
 	
 	this.name = projectsFile.workspace;
-	this.index = Project.findIndex(this.name);
 	
-	const get = (index) => {
+	const get = () => {
 		
-		const project = Project.get(index);
+		const project = Project.get(Project.findIndex(this.name));
 		const sources = Sources.get(project.sourcesFile);
 
 		return Object.assign({}, project, sources);	
 		
 	};
-	
+
+	const getName = () => {
+		
+		return this.name;
+		
+	};
+
+	const check = () => {
+
+		const name = this.name;
+
+		if (typeof name === 'string') {
+			
+			const obj = this.projects.find((element) => {
+		
+				return element.name == name;
+
+			});
+
+			if (!obj) {
+			
+				this.name = null;
+
+			} else {
+
+				this.name = obj.name;
+
+			}
+
+			// console.log(obj, this.name);
+			
+		} else {
+			
+			this.name = null;
+			
+		}
+
+	};
+
 	const set = (index) => {
 		
 		try {
-			
+
 			this.name = Project.findName(index);
-			this.index = index;
-			
+
 			const projects = { projects: Project.projects };
 			
 			const workspace = { workspace: this.name };
@@ -383,13 +431,15 @@ const Workspace = (() => {
 	};
 	
 	return {
-		index: this.index,
-		name: this.name,
 		get,
+		getName,
+		check,
 		set
 	};
 	
 })();
+
+// console.log(Sources.list());
 
 /* Exports */
 

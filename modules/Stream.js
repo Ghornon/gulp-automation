@@ -5,7 +5,7 @@ const { Workspace } = require('./config.js');
 
 const Stream = (() =>{
     
-	const current = Workspace.get(Workspace.index);
+	const current = Workspace.get();
 	
 	const projectPath = path.join(__dirname, '../..', current.dirName);
 	const Paths = current.paths;
