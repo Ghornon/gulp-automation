@@ -72,5 +72,5 @@ gulp.task('default', ['sass', 'lint', 'babel', 'img']);
 /* Status info */
 
 console.log(chalk.magenta.bold(figlet.textSync('wp-gulp-automation')), '\n\n');
-Logger.info(`Working on porject: ${chalk.green.bold(Workspace.getObject().name)}`);
-Logger.info(`Working in directory: ${chalk.green.bold(Stream.output('html'))}\n`);
+Logger.info(`Working on porject: ${chalk.cyan(Workspace.name)}`);
+Logger.info(`Working in directory: ${chalk.cyan(Stream.output('html'))}\n`);

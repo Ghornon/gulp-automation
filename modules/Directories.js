@@ -14,8 +14,6 @@ const Directories = (() => {
 
 			if (!fs.existsSync(dir[i])) {
 
-				Logger.info(`${dir[i]} creating...`);
-
 				mkdirp(dir[i], function (err) {
 
 					if (err)
@@ -32,10 +30,7 @@ const Directories = (() => {
 	};
 
 	const make = (index) => {
-
-		if (index === undefined)
-			index = Workspace.index;
-
+			
 		const current = Workspace.get(index);
 
 		const projectPath = path.join('../..', current.dirName);

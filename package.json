@@ -2,7 +2,10 @@
 	"name": "wp-gulp-automation",
 	"version": "2.0.0",
 	"description": "Gulp tasks config for wordpress",
-	"main": "index.js",
+	"main": "automation.js",
+	"bin": {
+		"automation": "automation.js"
+	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"lint": "eslint **/**.js -c ./config/.eslintrc.json --fix",
@@ -13,7 +16,7 @@
 		"theme",
 		"gulp",
 		"automation"
-	  ],
+	],
 	"author": "Szymon \"Button\" Guzik",
 	"license": "MIT",
 	"dependencies": {

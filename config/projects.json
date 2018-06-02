@@ -1,15 +1,25 @@
 {
-	"projects": [
-		{
-				"name": "Default",
-				"dirName": "default",
-				"sourcesFile": "default.json"
-		},
-			{
-				"name": "BbPress",
-				"dirName": "bbpress",
-				"sourcesFile": "wordpress.json"
-		}
-	],
-	"workspace": "Default"
+    "projects": [
+        {
+            "name": "Default",
+            "dirName": "default",
+            "sourcesFile": "default.json"
+        },
+        {
+            "name": "BbPress",
+            "dirName": "bbpress",
+            "sourcesFile": "wordpress.json"
+        },
+        {
+            "name": "test",
+            "dirName": "test",
+            "sourcesFile": "default.json"
+        },
+        {
+            "name": "test2",
+            "dirName": "test2",
+            "sourcesFile": "default.json"
+        }
+    ],
+    "workspace": "test2"
 }

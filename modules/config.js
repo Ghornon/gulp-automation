@@ -4,6 +4,7 @@ const Logger = require('./Logger.js');
 const fs = require('fs');
 const path = require('path');
 const Interface = require('./Interface.js');
+const mkdir = require('./Directories.js');
 
 const Paths = {
 	projects: path.join(__dirname, '../config/projects.json'),
@@ -115,13 +116,6 @@ const Sources = (() => { //In progress
 
 	};
 	
-	const test = () => {
-		
-		ISources.isImplementedBy(d);
-		IPaths.isImplementedBy(d.paths);
-		
-	};
-	
 	return {
 		get,
 		add,
@@ -162,7 +156,7 @@ const Project = (() => {
 		
 		if (typeof name === 'string') {
 			
-			const obj = this.projects.find((element) => { 
+			let obj = this.projects.find((element) => {
 		
 				return element.name == name;
 
@@ -279,7 +273,7 @@ const Project = (() => {
 			if (result) {
 				
 				throw new Error("This name or directory name has already existed!");
-				
+
 			}
 
 			this.projects.push(obj);
@@ -374,6 +368,8 @@ const Workspace = (() => {
 			const file = JSON.stringify(obj, null, 4);
 			
 			fs.writeFileSync(Paths.projects, file);
+			
+			Logger.success(`Workspace set at ${Logger.chalk.cyan(this.name)}`);
 
 			//			console.log(file);
 			

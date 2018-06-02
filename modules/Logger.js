@@ -3,6 +3,8 @@
 const chalk  = require('chalk');
 
 const Logger =  {
+	
+	chalk: chalk,
 
 	success: (msg) => {
 		console.log(chalk.green.bold('[OK]'), msg);
