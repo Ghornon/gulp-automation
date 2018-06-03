@@ -20,14 +20,15 @@ $ npm install
 ### #2: Create new project
 Create and select project using cli application.
 ```bash
-$ node ./automation.js create
-# ? Project name: <name>
-# ? Project directory name: <directory name>
-# ? Project sources file name: (default.json) <sources file>
+$ automation project
+```
 
-$ node ./automation.js select
-# ? Select project: (Use arrow keys)
-# > Your project name
+```bash
+# ? What do you want to do with the project? (Use arrow keys)
+# > Select project
+#   Create new project
+#   Edit project
+#   Remove project
 ```
 
 ### #3: Run gulp
@@ -53,6 +54,7 @@ You can create, modify sources file by adding/modifying json files to "/config/s
     "commander": "^2.15.1",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
+    "figlet": "^1.2.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-babel": "^7.0.1",

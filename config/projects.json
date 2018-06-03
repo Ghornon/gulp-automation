@@ -4,11 +4,6 @@
             "name": "Default",
             "dirName": "default",
             "sourcesFile": "default.json"
-        },
-        {
-            "name": "BbPress",
-            "dirName": "bbpress",
-            "sourcesFile": "wordpress.json"
         }
     ],
     "workspace": "Default"

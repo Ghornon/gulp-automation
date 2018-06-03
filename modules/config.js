@@ -4,7 +4,6 @@ const Logger = require('./Logger.js');
 const fs = require('fs');
 const path = require('path');
 const Interface = require('./Interface.js');
-const mkdir = require('./Directories.js');
 
 const Paths = {
 	projects: path.join(__dirname, '../config/projects.json'),
@@ -354,9 +353,12 @@ const Workspace = (() => {
 	
 	this.name = projectsFile.workspace;
 	
-	const get = () => {
+	const get = (index) => {
 		
-		const project = Project.get(Project.findIndex(this.name));
+		if (typeof index !== 'number')
+			index = Project.findIndex(this.name);
+
+		const project = Project.get(index);
 		const sources = Sources.get(project.sourcesFile);
 
 		return Object.assign({}, project, sources);	

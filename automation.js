@@ -5,6 +5,7 @@ const { prompt } = require('inquirer');
 const Logger = require('./modules/Logger.js');
 const { Sources, Workspace, Project } = require('./modules/config.js');
 const Interface = require('./modules/Interface.js');
+const Directories = require('./modules/Directories.js');
 const shell = require('shelljs');
 const chalk = require('chalk');
 
@@ -64,13 +65,31 @@ class Chooser {
 				if (self[callback] && typeof self[callback] === 'function')
 					self[callback]();
 		
-			})
+			});
 	
 		};
 
 	}
 
-};
+	confirm(message, callback) {
+
+		prompt({
+		
+			type: 'confirm',
+			name: 'confirm',
+			message: message
+			
+		}).then((answers) => {
+
+			if (answers.confirm)
+				if (callback && typeof callback === 'function')
+					callback();
+
+		});	
+
+	}
+
+}
 
 class ProjectPrompt extends Chooser {
 
@@ -128,6 +147,10 @@ class ProjectPrompt extends Chooser {
 			Logger.info('Creating new project...');
 
 			Project.add(answers);
+
+			this.confirm('Do you want to create a project directory?', () => {
+				Directories.make(Project.findIndex(answers.name));
+			});
 
 		});
 
@@ -202,15 +225,16 @@ class ProjectPrompt extends Chooser {
 			
 			const current = answers.project;
 			
-			Logger.info('Removing project...');
-
-			Project.remove(Project.findIndex(current)); //Error during try to remove selected project if the project name is equal workspace name !@#?
+			this.confirm('Are you sure you want to delete the project?', () => {
+				Logger.info('Removing project...');
+				Project.remove(Project.findIndex(current));
+			});
 			
 		});
 
 	}
 
-};
+}
 
 class SourcesPrompt extends Chooser {
 
@@ -250,9 +274,7 @@ class SourcesPrompt extends Chooser {
 
 	}
 
-};
-
-/* Objects */
+}
 
 // Project
 
@@ -279,38 +301,12 @@ const project = new ProjectPrompt('Project', 'What do you want to do with the pr
 
 // Sources
 
-
-const sources = new SourcesPrompt('Sources', 'What do you want to do with the sources files?', [
-
-	{
-		text: 'List sources files names',
-		callback: 'list'
-	}
-
-]);
-
-// Test
-
-const test = new ProjectPrompt('test', 'test msg', [
-	
-	{
-		text: 'Select',
-		callback: 'select'
-	},
-	{
-		text: 'Test',
-		callback: 'test'
-	}
-
-]);
+const sources = new SourcesPrompt('Sources', 'What do you want to do with the sources files?', [{
+	text: 'List sources files names',
+	callback: 'list'
+}]);
 
 /* Create prompt */
-
-program
-	.command('test')
-	.alias('t')
-	.description('Test options')
-	.action(test.action());
 
 program
 	.command('project')
