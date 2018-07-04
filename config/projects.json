@@ -3,8 +3,21 @@
         {
             "name": "Default",
             "dirName": "default",
-            "sourcesFile": "default.json"
+            "structureFile": "default.json",
+            "bundler": true
+        },
+        {
+            "name": "Zwyrtany",
+            "dirName": "zwyrtany",
+            "structureFile": "wordpress.json",
+            "bundler": true
+        },
+        {
+            "name": "test",
+            "dirName": "test",
+            "structureFile": "wordpress.json",
+            "bundler": true
         }
     ],
-    "workspace": "Default"
+    "workspace": "test"
 }

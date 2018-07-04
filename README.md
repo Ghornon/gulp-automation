@@ -15,6 +15,7 @@ Clone files to your computer. If you want to use wordpress, use the "/wp-content
 $ git clone https://github.com/Ghornon/wp-gulp-automation.git dirName
 $ cd dirName
 $ npm install
+$ npm link
 ```
 
 ### #2: Create new project

@@ -7,23 +7,34 @@ const Interface = require('./Interface.js');
 
 const Paths = {
 	projects: path.join(__dirname, '../config/projects.json'),
-	sources: path.join(__dirname, '../config/sources/')
+	structures: path.join(__dirname, '../config/structures/')
 };
 
 const projectsFile = require(Paths.projects);
 
-/* Sources */
+/* Structures */
 
-const Sources = (() => { //In progress
+const Structures = (() => { //In progress
 	
-	const ISources = new Interface('ISources', [], ['paths', 'files']);
-	const IPaths = new Interface('IPaths', [], ['src', 'dist']);
+	const IStructures = new Interface('IStructures', [], ['paths', 'files', 'bundle']);
+	const IPaths = new Interface('IPaths', [], ['input', 'output']);
 	
+	const isExists = (name) => {
+
+		const filePath = path.join(Paths.structures, name);
+		
+		if (fs.existsSync(filePath))
+			return true;
+
+		return false;
+		
+	}; 
+
 	const list = () => {
 
 		const files = [];
 
-		fs.readdirSync(Paths.sources).forEach(file => {
+		fs.readdirSync(Paths.structures).forEach(file => {
 			files.push(file);
 		});
 
@@ -35,13 +46,13 @@ const Sources = (() => { //In progress
 		
 		try {
 			
-			const filePath = path.join(Paths.sources, name);
+			if (!isExists(name))
+				throw new Error(`Cannot find structure file named ${name}!`);
 			
-			if (!fs.existsSync(filePath))
-				throw new Error(`Cannot find file named ${name}!`);
-				
-			const sources = require(filePath);
-			return sources;
+			const filePath = path.join(Paths.structures, name);
+			const structures = require(filePath);
+
+			return structures;
 			
 		} catch (Error) {
 			
@@ -51,23 +62,23 @@ const Sources = (() => { //In progress
 		
 	};
 	
-	const add = (name, sources) => {
+	const add = (name, structures) => {
 
 		try {
 			
-			ISources.isImplementedBy(sources);
-			IPaths.isImplementedBy(sources.paths);
+			IStructures.isImplementedBy(structures);
+			IPaths.isImplementedBy(structures.paths);
 			
-			const filePath = path.join(Paths.sources, name);
+			const filePath = path.join(Paths.structures, name);
 			
 			if (fs.existsSync(filePath))
 				throw new Error("This file name has already existed!");
 			
-			const file = JSON.stringify(sources, null, 4);
+			const file = JSON.stringify(structures, null, 4);
 			
 			fs.writeFileSync(filePath, file);
 			
-			Logger.success("Successfully added new sources file.");
+			Logger.success("Successfully added new structures file.");
 			
 			
 		} catch (Error) {
@@ -78,23 +89,23 @@ const Sources = (() => { //In progress
 
 	};
 	
-	const edit = (name, sources) => {
+	const edit = (name, structures) => {
 
 		try {
 			
-			ISources.isImplementedBy(sources);
-			IPaths.isImplementedBy(sources.paths);
+			IStructures.isImplementedBy(structures);
+			IPaths.isImplementedBy(structures.paths);
 			
-			const filePath = path.join(Paths.sources, name);
+			const filePath = path.join(Paths.structures, name);
 			
 			if (!fs.existsSync(filePath))
 				throw new Error(`Cannot find file named ${name}!`);
 			
-			const file = JSON.stringify(sources, null, 4);
+			const file = JSON.stringify(structures, null, 4);
 			
 			fs.writeFileSync(filePath, file);
 			
-			Logger.success("Successfully edited sources file.");
+			Logger.success("Successfully edited structures file.");
 			
 			
 		} catch (Error) {
@@ -109,14 +120,14 @@ const Sources = (() => { //In progress
 
 		try {
 			
-			const filePath = path.join(Paths.sources, name);
+			const filePath = path.join(Paths.structures, name);
 			
 			if (!fs.existsSync(filePath))
 				throw new Error(`Cannot find file named ${name}!`);
 				
 			fs.unlinkSync(filePath);
 			
-			Logger.success("Successfully removed sources file.");
+			Logger.success("Successfully removed structures file.");
 			
 			
 		} catch (Error) {
@@ -128,6 +139,7 @@ const Sources = (() => { //In progress
 	};
 	
 	return {
+		isExists,
 		list,
 		get,
 		add,
@@ -141,7 +153,7 @@ const Sources = (() => { //In progress
 
 const Project = (() => {
 	
-	const IProject = new Interface('IProject', [], ['name', 'dirName', 'sourcesFile']);
+	const IProject = new Interface('IProject', [], ['name', 'dirName', 'structureFile', 'bundler']);
 	
 	this.projects = projectsFile.projects;
 	
@@ -270,7 +282,7 @@ const Project = (() => {
 		
 	};
 	
-	const add = (obj) => {
+	const add = (obj, callback) => {
 		
 		try {
 			
@@ -282,14 +294,17 @@ const Project = (() => {
 				
 			});
 			
-			if (result) {
-				
+			if (result)
 				throw new Error("This name or directory name has already existed!");
 
-			}
+			if (!Structures.isExists(obj.structureFile))
+				throw new Error(`Cannot find structure file named ${obj.structureFile}!`);
 
 			this.projects.push(obj);
 			_writeFile("Successfully added new project.");
+
+			if (callback && typeof callback === 'function')
+				callback();
 			
 		} catch (Error) {
 
@@ -299,16 +314,22 @@ const Project = (() => {
 		
 	};
 	
-	const edit = (index, obj) => {
+	const edit = (index, obj, callback) => {
 		
 		try {
 			
 			_checkIndex(index);
 			IProject.isImplementedBy(obj);
+
+			if (!Structures.isExists(obj.structureFile))
+				throw new Error(`Cannot find structure file named ${obj.structureFile}!`);
 			
 			this.projects[index] = obj;
 			
 			_writeFile("Successfully edited project.");
+
+			if (callback && typeof callback === 'function')
+				callback();
 			
 		} catch (Error) {
 
@@ -318,7 +339,7 @@ const Project = (() => {
 		
 	};
 	
-	const remove = (index) => {
+	const remove = (index, callback) => {
 		
 		try {
 			
@@ -326,6 +347,9 @@ const Project = (() => {
 			this.projects.splice(index, 1);
 			
 			_writeFile("Successfully removed project.");
+
+			if (callback && typeof callback === 'function')
+				callback();
 			
 		} catch (Error) {
 
@@ -359,9 +383,9 @@ const Workspace = (() => {
 			index = Project.findIndex(this.name);
 
 		const project = Project.get(index);
-		const sources = Sources.get(project.sourcesFile);
+		const structures = Structures.get(project.structureFile);
 
-		return Object.assign({}, project, sources);	
+		return Object.assign({}, project, structures);	
 		
 	};
 
@@ -441,12 +465,12 @@ const Workspace = (() => {
 	
 })();
 
-// console.log(Sources.list());
+// console.log(Structures.list());
 
 /* Exports */
 
 module.exports = {
-	Sources,
+	Structures,
 	Workspace,
 	Project
 };

@@ -38,9 +38,9 @@ const Directories = (() => {
 
 		const dirs = [];
 
-		Object.keys(Paths.src).map((element) => {
+		Object.keys(Paths.input).map((element) => {
 
-			const newPath = path.join(__dirname, projectPath, Paths.src[element]);
+			const newPath = path.join(__dirname, projectPath, Paths.input[element]);
 
 			dirs.push(newPath);
 
@@ -48,9 +48,9 @@ const Directories = (() => {
 
 		});
 
-		Object.keys(Paths.dist).map((element) => {
+		Object.keys(Paths.output).map((element) => {
 
-			const newPath = path.join(__dirname, projectPath, Paths.dist[element]);
+			const newPath = path.join(__dirname, projectPath, Paths.output[element]);
 
 			dirs.push(newPath);
 

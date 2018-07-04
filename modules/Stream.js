@@ -14,14 +14,14 @@ const Stream = (() =>{
 	const input = (type) => {                                   // Return inputs files array.
 		
 		return Files[type].map((item)=>{
-			return path.normalize(path.join(projectPath, Paths.src[type], item));
+			return path.normalize(path.join(projectPath, Paths.input[type], item));
 		});
         
 	};
     
 	const output = (type) => {                                  // Return outputs directory.
         
-		const dir = path.normalize(path.join(projectPath, Paths.dist[type]));
+		const dir = path.normalize(path.join(projectPath, Paths.output[type]));
 		
 		return dir;
         

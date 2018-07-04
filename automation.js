@@ -3,7 +3,7 @@
 const program = require('commander');
 const { prompt } = require('inquirer');
 const Logger = require('./modules/Logger.js');
-const { Sources, Workspace, Project } = require('./modules/config.js');
+const { Structures, Workspace, Project } = require('./modules/config.js');
 const Interface = require('./modules/Interface.js');
 const Directories = require('./modules/Directories.js');
 const shell = require('shelljs');
@@ -23,7 +23,7 @@ class Chooser {
 		this.message = message;
 		this.choices = [];
 
-		const IChoices = new Interface('IChoices', [], ['text', 'callback']);
+		const IChoices = new Interface('IChoices', [], ['label', 'callback']);
 		
 		for (let i = 0; i < choices.length; i++) {
 
@@ -51,13 +51,13 @@ class Chooser {
 				name: name,
 				message: message,
 				choices: choices.map((element) => {
-					return element.text;
+					return element.label;
 				})
 		
 			}).then((answares) => {
 				
 				const obj = choices.find((element) => {
-					return answares[name] == element.text;
+					return answares[name] == element.label;
 				});
 
 				const callback = obj.callback;
@@ -121,6 +121,27 @@ class ProjectPrompt extends Chooser {
 
 	}
 
+	init() {
+
+		prompt({
+		
+			type: 'list',
+			name: 'select',
+			message: 'Select project to initiate a project directory structure:',
+			choices: Project.projects.map((element) => {
+				
+				return element.name;
+				
+			})
+			
+		}).then((answers) => {
+	
+			Directories.make(Project.findIndex(answers.name));
+			
+		});
+
+	}
+
 	create() {
 
 		prompt([
@@ -137,20 +158,30 @@ class ProjectPrompt extends Chooser {
 			},
 			{
 				type: 'input',
-				name: 'sourcesFile',
-				message: 'Project sources file name:',
+				name: 'structureFile',
+				message: 'Project structure file name:',
 				default: 'default.json'
+			},
+			{
+				type: 'confirm',
+				name: 'bundler',
+				message: 'Do you want create a bundle file on output?'
 			}
 
 		]).then((answers) => {
 
 			Logger.info('Creating new project...');
 
-			Project.add(answers);
+			const self = this;
 
-			this.confirm('Do you want to create a project directory?', () => {
-				Directories.make(Project.findIndex(answers.name));
-			});
+			const callback = () => {
+				self.confirm('Do you want to init a project directories structure?', () => 
+					Directories.make(Project.findIndex(answers.name)));
+			};
+
+			console.log(JSON.stringify(answers, null, 4));
+
+			Project.add(answers, callback);
 
 		});
 
@@ -191,16 +222,29 @@ class ProjectPrompt extends Chooser {
 				},
 				{
 					type: 'input',
-					name: 'sourcesFile',
-					message: 'Project sources file name:',
-					default: current.sourcesFile
+					name: 'structureFile',
+					message: 'Project structures file name:',
+					default: current.structureFile
+				},
+				{
+					type: 'confirm',
+					name: 'bundler',
+					message: 'Do you want create a bundle file on output?',
+					default: current.bundler
 				}
 	
 			]).then((answers) => {
 
 				Logger.info('Editing project...');
-	
-				Project.edit(index, answers);
+
+				console.log(JSON.stringify(answers, null, 4));
+
+				const callback = () => {
+					self.confirm('Do you want to again into a project directory structure?', () => 
+						Directories.make(Project.findIndex(answers.name)));
+				};
+
+				Project.edit(index, answers, callback);
 	
 			});
 			
@@ -236,7 +280,7 @@ class ProjectPrompt extends Chooser {
 
 }
 
-class SourcesPrompt extends Chooser {
+class StructurePromp extends Chooser {
 
 	constructor(name, message, choices) {
 		super(name, message, choices);
@@ -244,9 +288,9 @@ class SourcesPrompt extends Chooser {
 
 	list() {
 
-		const files = Sources.list();
+		const files = Structures.list();
 		const usedFiles = Project.projects.map((element)=>{
-			return element.sourcesFile;
+			return element.structuresFile;
 		});
 
 		console.log('\n',chalk.cyan.bold("Used by the application"), '\t', "Not used");
@@ -270,10 +314,6 @@ class SourcesPrompt extends Chooser {
 
 	}
 
-	create() {
-
-	}
-
 }
 
 // Project
@@ -281,28 +321,32 @@ class SourcesPrompt extends Chooser {
 const project = new ProjectPrompt('Project', 'What do you want to do with the project?', [
 
 	{
-		text: 'Select project',
+		label: 'Select project',
 		callback: 'select'
 	},
 	{
-		text: 'Create new project',
+		label: 'Init project',
+		callback: 'init'
+	},
+	{
+		label: 'Create new project',
 		callback: 'create'
 	},
 	{
-		text: 'Edit project',
+		label: 'Edit project',
 		callback: 'edit'
 	},
 	{
-		text: 'Remove project ',
+		label: 'Remove project ',
 		callback: 'remove'
 	}
 
 ]);
 
-// Sources
+// Structures
 
-const sources = new SourcesPrompt('Sources', 'What do you want to do with the sources files?', [{
-	text: 'List sources files names',
+const structure = new StructurePromp('Structures', 'What do you want to do with the structures files?', [{
+	label: 'List structure files names',
 	callback: 'list'
 }]);
 
@@ -315,10 +359,10 @@ program
 	.action(project.action());
 
 program
-	.command('sources')
+	.command('structure')
 	.alias('s')
-	.description('Sources options')
-	.action(sources.action());
+	.description('Structure directories options')
+	.action(structure.action());
 
 program
 	.command('run')

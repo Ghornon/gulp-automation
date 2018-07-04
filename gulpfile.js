@@ -27,7 +27,7 @@ const plumberErrorHandler = {
 
 const getTask = (task) => {
 
-	const get = require(`./config/gulp-tasks/${task}.js`)(gulp, plugins, Stream, plumberErrorHandler);
+	const get = require(`./config/gulp-tasks/${task}.js`)(gulp, plugins, Stream, plumberErrorHandler, Workspace.get());
 
 	return get;
 
@@ -71,6 +71,6 @@ gulp.task('default', ['sass', 'lint', 'babel', 'img']);
 
 /* Status info */
 
-console.log(chalk.magenta.bold(figlet.textSync('wp-gulp-automation')), '\n\n');
+console.log(chalk.magenta.bold(figlet.textSync('gulp-automation')), '\n\n');
 Logger.info(`Working on porject: ${chalk.cyan(Workspace.getName())}`);
 Logger.info(`Working in directory: ${chalk.cyan(Stream.output('html'))}\n`);

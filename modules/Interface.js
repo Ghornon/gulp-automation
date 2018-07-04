@@ -43,7 +43,7 @@ class Interface {
 				
 				const currentMember = this.properties[i];
 				
-				if (!obj[currentMember] || typeof obj[currentMember] === 'function')
+				if ((!obj[currentMember] && typeof obj[currentMember] !== 'boolean') || typeof obj[currentMember] === 'function')
 					throw new Error(`Object not implement interface ${this.name}. Cannot find properties ${currentMember}!`);
 				
 			}
