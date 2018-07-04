@@ -1,4 +1,4 @@
-# WP-Gulp-automation
+# Gulp-automation
 ### Tasks ruiner for wordpress theme development
 
 ## # Content
