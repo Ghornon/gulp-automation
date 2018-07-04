@@ -170,14 +170,14 @@ class ProjectPrompt extends Chooser {
 
 		]).then((answers) => {
 
-			Logger.info('Creating new project...');
-
 			const self = this;
-
+			
 			const callback = () => {
 				self.confirm('Do you want to init a project directories structure?', () => 
-					Directories.make(Project.findIndex(answers.name)));
+				Directories.make(Project.findIndex(answers.name)));
 			};
+			
+			Logger.info('Creating new project...');
 
 			console.log(JSON.stringify(answers, null, 4));
 
@@ -235,14 +235,16 @@ class ProjectPrompt extends Chooser {
 	
 			]).then((answers) => {
 
-				Logger.info('Editing project...');
-
-				console.log(JSON.stringify(answers, null, 4));
+				const self = this;
 
 				const callback = () => {
 					self.confirm('Do you want to again into a project directory structure?', () => 
 						Directories.make(Project.findIndex(answers.name)));
 				};
+
+				Logger.info('Editing project...');
+
+				console.log(JSON.stringify(answers, null, 4));
 
 				Project.edit(index, answers, callback);
 	
