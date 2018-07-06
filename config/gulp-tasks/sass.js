@@ -1,9 +1,7 @@
 module.exports = (gulp, plugins, Stream, exception, Workspace) => {
 
-	console.log(Workspace);
-
 	const condition = Workspace.bundler;
-	const bundle = Workspace.bundleName.css;
+	const bundle = Workspace.bundle.css;
 
 	return () => {
 
@@ -26,7 +24,7 @@ module.exports = (gulp, plugins, Stream, exception, Workspace) => {
 				}
 			})) // Minify and optimize.
 
-			.pipe(plugins.if(condition, plugins.concat(bundle))) // Concatenate all css files into styles.css.
+			.pipe(plugins.if(condition, plugins.concat(bundle))) // Concatenate all css files into bundle if bundler is on
 
 			.pipe(plugins.sourcemaps.write('.')) // Write source map.
 

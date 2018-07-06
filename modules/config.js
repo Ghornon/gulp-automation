@@ -14,11 +14,56 @@ const projectsFile = require(Paths.projects);
 
 /* Structures */
 
-const Structures = (() => { //In progress
+const Structures = (() => {
 	
-	const IStructures = new Interface('IStructures', [], ['paths', 'files', 'bundle']);
-	const IPaths = new Interface('IPaths', [], ['input', 'output']);
-	
+	const _writeFile = (name, structures, msg) => {
+		
+		try {
+
+			const filePath = path.join(Paths.structures, name);
+			const file = JSON.stringify(structures, null, 4);
+			
+			fs.writeFileSync(filePath, file);
+			
+			Logger.success(msg);
+			
+			// console.log(file);
+
+
+		} catch (Error) {
+
+			Logger.error(Error.message);
+
+		}
+		
+	};
+
+	const _checkStructure = (sctructure) => {
+
+		try {
+
+			const IStructure = new Interface('IStructure', [], ['paths', 'files', 'bundle']);
+			const IStructurePaths = new Interface('IStructurePaths', [], ['input', 'output']);
+
+			IStructure.isImplementedBy(sctructure);
+			IStructurePaths.isImplementedBy(sctructure.paths);
+
+			const a = structure.paths.input.length;
+			const b = structure.paths.output.length;
+			const c = structure.files.length;
+			const d = structure.bundle.length;
+
+			if (a != b || b != c || c != d)
+				throw new Error("The object doesn't implement all interfaces. Bad properties length!");
+			
+		} catch (Error) {
+
+			Logger.error(Error.message);
+
+		}
+
+	};
+
 	const isExists = (name) => {
 
 		const filePath = path.join(Paths.structures, name);
@@ -50,9 +95,11 @@ const Structures = (() => { //In progress
 				throw new Error(`Cannot find structure file named ${name}!`);
 			
 			const filePath = path.join(Paths.structures, name);
-			const structures = require(filePath);
+			const structure = require(filePath);
 
-			return structures;
+			_checkStructure(sctructure);
+
+			return structure;
 			
 		} catch (Error) {
 			
@@ -62,24 +109,18 @@ const Structures = (() => { //In progress
 		
 	};
 	
-	const add = (name, structures) => {
+	const add = (name, structure) => {
 
 		try {
 			
-			IStructures.isImplementedBy(structures);
-			IPaths.isImplementedBy(structures.paths);
+			_checkStructure(sctructure);
 			
 			const filePath = path.join(Paths.structures, name);
 			
-			if (fs.existsSync(filePath))
+			if (isExists(name))
 				throw new Error("This file name has already existed!");
 			
-			const file = JSON.stringify(structures, null, 4);
-			
-			fs.writeFileSync(filePath, file);
-			
-			Logger.success("Successfully added new structures file.");
-			
+			_writeFile(name, structure, "Successfully added new structure file.");
 			
 		} catch (Error) {
 			
@@ -89,23 +130,18 @@ const Structures = (() => { //In progress
 
 	};
 	
-	const edit = (name, structures) => {
+	const edit = (name, structure) => {
 
 		try {
 			
-			IStructures.isImplementedBy(structures);
-			IPaths.isImplementedBy(structures.paths);
+			_checkStructure(sctructure);
 			
 			const filePath = path.join(Paths.structures, name);
 			
 			if (!fs.existsSync(filePath))
 				throw new Error(`Cannot find file named ${name}!`);
-			
-			const file = JSON.stringify(structures, null, 4);
-			
-			fs.writeFileSync(filePath, file);
-			
-			Logger.success("Successfully edited structures file.");
+
+			_writeFile(name, structure, "Successfully edited structure file.");
 			
 			
 		} catch (Error) {
@@ -127,7 +163,7 @@ const Structures = (() => { //In progress
 				
 			fs.unlinkSync(filePath);
 			
-			Logger.success("Successfully removed structures file.");
+			Logger.success("Successfully removed structure file.");
 			
 			
 		} catch (Error) {

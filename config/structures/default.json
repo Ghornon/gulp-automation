@@ -48,10 +48,12 @@
 		
 	},
 		
-	"bundleName": {
+	"bundle": {
 
 		"js": "bundle.js",
-		"css": "index.css"
+		"css": "bundle.css",
+		"img": null,
+		"html": "index.html"
 		
 	}
 		

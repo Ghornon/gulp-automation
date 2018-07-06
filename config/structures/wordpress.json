@@ -50,10 +50,13 @@
 			
 	},
 	
-	"bundleName": {
+	"bundle": {
 
 		"js": "bundle.js",
-		"css": "index.css"
+		"css": "index.css",
+		"img": null,
+		"html": "index.php"
+
 	}
 
 }

@@ -316,6 +316,24 @@ class StructurePromp extends Chooser {
 
 	}
 
+	create() {
+
+		prompt([
+
+			{
+				type: 'input',
+				name: 'name',
+				message: 'Structure name:'
+			}
+
+		]).then((answers) => {
+
+			
+
+		});
+
+	}
+
 }
 
 // Project

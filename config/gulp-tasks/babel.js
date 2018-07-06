@@ -1,7 +1,7 @@
 module.exports = (gulp, plugins, Stream, exception, Workspace) => {
 
 	const condition = Workspace.bundler;
-	const bundle = Workspace.bundleName.js;
+	const bundle = Workspace.bundle.js;
 
 	return () => {
 
@@ -17,7 +17,7 @@ module.exports = (gulp, plugins, Stream, exception, Workspace) => {
 
 			})) // Compile es6 to es5.
 
-			.pipe(plugins.if(condition, plugins.concat(bundle))) // Concatenate all js files into bundle.js.
+			.pipe(plugins.if(condition, plugins.concat(bundle))) // Concatenate all js files into bundle if bundler is on
 
 			.pipe(plugins.uglify()) // Minify and optimize.
 

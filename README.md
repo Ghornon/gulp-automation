@@ -27,6 +27,7 @@ $ automation project
 ```bash
 # ? What do you want to do with the project? (Use arrow keys)
 # > Select project
+#   Init project
 #   Create new project
 #   Edit project
 #   Remove project
@@ -45,7 +46,7 @@ $ gulp watch
         - Albert Einstein
 
 ### #5: Optional Step
-You can create, modify sources file by adding/modifying json files to "/config/sources/".
+You can create, modify sources file by adding/modifying json files to "/config/structures/".
 
 ## Dev dependencies (included in package.json)
     "babel-cli": "^6.26.0",
@@ -62,6 +63,7 @@ You can create, modify sources file by adding/modifying json files to "/config/s
     "gulp-concat": "^2.6.1",
     "gulp-cssnano": "^2.1.2",
     "gulp-eslint": "^4.0.2",
+    "gulp-if": "^2.0.2",
     "gulp-imagemin": "^4.1.0",
     "gulp-livereload": "^3.8.1",
     "gulp-load-plugins": "^1.5.0",
