@@ -16,12 +16,12 @@ const projectsFile = require(Paths.projects);
 
 const Structures = (() => {
 	
-	const _writeFile = (name, structures, msg) => {
+	const _writeFile = (name, structure, msg) => {
 		
 		try {
 
-			const filePath = path.join(Paths.structures, name);
-			const file = JSON.stringify(structures, null, 4);
+			const filePath = path.join(Paths.structure, name);
+			const file = JSON.stringify(structure, null, 4);
 			
 			fs.writeFileSync(filePath, file);
 			
@@ -38,15 +38,15 @@ const Structures = (() => {
 		
 	};
 
-	const _checkStructure = (sctructure) => {
+	const _checkStructure = (structure) => {
 
 		try {
 
 			const IStructure = new Interface('IStructure', [], ['paths', 'files', 'bundle']);
 			const IStructurePaths = new Interface('IStructurePaths', [], ['input', 'output']);
 
-			IStructure.isImplementedBy(sctructure);
-			IStructurePaths.isImplementedBy(sctructure.paths);
+			IStructure.isImplementedBy(structure);
+			IStructurePaths.isImplementedBy(structure.paths);
 
 			const a = structure.paths.input.length;
 			const b = structure.paths.output.length;
@@ -97,7 +97,7 @@ const Structures = (() => {
 			const filePath = path.join(Paths.structures, name);
 			const structure = require(filePath);
 
-			_checkStructure(sctructure);
+			_checkStructure(structure);
 
 			return structure;
 			
@@ -419,9 +419,12 @@ const Workspace = (() => {
 			index = Project.findIndex(this.name);
 
 		const project = Project.get(index);
-		const structures = Structures.get(project.structureFile);
 
-		return Object.assign({}, project, structures);	
+		const structure = Structures.get(project.structureFile);
+
+		const workspace = Object.assign({}, project, structure);
+
+		return workspace;	
 		
 	};
 

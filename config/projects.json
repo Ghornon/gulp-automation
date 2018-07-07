@@ -17,6 +17,18 @@
             "dirName": "test",
             "structureFile": "wordpress.json",
             "bundler": true
+        },
+        {
+            "name": "asd",
+            "dirName": "asd",
+            "structureFile": "default.json",
+            "bundler": true
+        },
+        {
+            "name": "asdf",
+            "dirName": "asdf",
+            "structureFile": "default.json",
+            "bundler": false
         }
     ],
     "workspace": "test"

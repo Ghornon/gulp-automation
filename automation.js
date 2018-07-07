@@ -102,7 +102,7 @@ class ProjectPrompt extends Chooser {
 		prompt({
 		
 			type: 'list',
-			name: 'select',
+			name: 'name',
 			message: 'Select project:',
 			choices: Project.projects.map((element) => {
 				
@@ -113,7 +113,7 @@ class ProjectPrompt extends Chooser {
 			
 		}).then((answers) => {
 			
-			const current = answers.select;
+			const current = answers.name;
 	
 			Workspace.set(Project.findIndex(current));
 			
@@ -126,7 +126,7 @@ class ProjectPrompt extends Chooser {
 		prompt({
 		
 			type: 'list',
-			name: 'select',
+			name: 'name',
 			message: 'Select project to initiate a project directory structure:',
 			choices: Project.projects.map((element) => {
 				
@@ -136,7 +136,9 @@ class ProjectPrompt extends Chooser {
 			
 		}).then((answers) => {
 	
-			Directories.make(Project.findIndex(answers.name));
+			const current = answers.name;
+
+			Directories.make(Project.findIndex(current));
 			
 		});
 
