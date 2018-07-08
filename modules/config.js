@@ -64,14 +64,25 @@ const Structures = (() => {
 
 	};
 
+	const _checkName = (name) => {
+
+		const regExp = new RegExp('/^[^\\/:*?"<>|.]+(.)+(json)+$/');
+
+		if (!regExp.test(name))
+			throw new Error("Bad file name! The file name can not include special characters and must be in json format!");
+
+	};
+
 	const isExists = (name) => {
 
 		const filePath = path.join(Paths.structures, name);
 		
-		if (fs.existsSync(filePath))
-			return true;
+		_checkName(name);
 
-		return false;
+		if (!fs.existsSync(filePath))
+			return false;
+
+		return true;
 		
 	}; 
 
@@ -113,12 +124,10 @@ const Structures = (() => {
 
 		try {
 			
-			_checkStructure(sctructure);
-			
-			const filePath = path.join(Paths.structures, name);
-			
 			if (isExists(name))
 				throw new Error("This file name has already existed!");
+
+			_checkStructure(structure);
 			
 			_writeFile(name, structure, "Successfully added new structure file.");
 			
@@ -134,12 +143,10 @@ const Structures = (() => {
 
 		try {
 			
-			_checkStructure(sctructure);
-			
-			const filePath = path.join(Paths.structures, name);
-			
-			if (!fs.existsSync(filePath))
+			if (!isExists(name))
 				throw new Error(`Cannot find file named ${name}!`);
+
+			_checkStructure(structure);
 
 			_writeFile(name, structure, "Successfully edited structure file.");
 			
@@ -156,11 +163,11 @@ const Structures = (() => {
 
 		try {
 			
-			const filePath = path.join(Paths.structures, name);
-			
-			if (!fs.existsSync(filePath))
+			if (!isExists(name))
 				throw new Error(`Cannot find file named ${name}!`);
-				
+			
+			const filePath = path.join(Paths.structures, name);
+
 			fs.unlinkSync(filePath);
 			
 			Logger.success("Successfully removed structure file.");

@@ -176,7 +176,7 @@ class ProjectPrompt extends Chooser {
 			
 			const callback = () => {
 				self.confirm('Do you want to init a project directories structure?', () => 
-				Directories.make(Project.findIndex(answers.name)));
+					Directories.make(Project.findIndex(answers.name)));
 			};
 			
 			Logger.info('Creating new project...');
@@ -330,7 +330,41 @@ class StructurePromp extends Chooser {
 
 		]).then((answers) => {
 
-			
+			const name  = answers.name;
+
+			if (!Structures.isExists(name)) {
+
+				prompt([
+
+					{
+						type: 'input',
+						name: 'src',
+						message: 'Source files directory name:'
+					},
+					{
+						type: 'input',
+						name: 'dist',
+						message: 'Distribute files directory name:'
+					},
+					{
+						type: 'list',
+						name: 'nested',
+						message: 'Do you want use nested directories?',
+						choices: ['For all', 'Only for source directory', 'Only for distribute directory', 'Disabled'],
+						default: 'For all'
+					}
+		
+				]).then(() => {
+
+
+		
+				});
+
+			} else {
+
+				Logger.error("This file name has already existed!");
+
+			}
 
 		});
 
