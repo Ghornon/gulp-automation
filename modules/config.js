@@ -66,7 +66,7 @@ const Structures = (() => {
 
 	const _checkName = (name) => {
 
-		const regExp = new RegExp('/^[^\\/:*?"<>|.]+(.)+(json)+$/');
+		const regExp = new RegExp('^[^\\/:*?"<>|.]+(.)+(json)+$');
 
 		if (!regExp.test(name))
 			throw new Error("Bad file name! The file name can not include special characters and must be in json format!");
