@@ -34,6 +34,6 @@ const Stream = (() =>{
     
 })();
 
-//console.log(Stream.input('html'), Stream.output('css'));
+console.log(Stream.input('css'), Stream.output('css'));
 
 module.exports = Stream;

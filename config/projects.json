@@ -13,23 +13,53 @@
             "bundler": true
         },
         {
-            "name": "test",
-            "dirName": "test",
+            "name": "ButtonStudio.net_v2",
+            "dirName": "ButtonStudio.net_v2",
+            "structureFile": "buttonstudio.json",
+            "bundler": true
+        },
+        {
+            "name": "ZwyrtanyWP",
+            "dirName": "wordpress/wp-content/themes/zwyrtany",
             "structureFile": "wordpress.json",
             "bundler": true
         },
         {
-            "name": "asd",
-            "dirName": "asd",
+            "name": "adprofity",
+            "dirName": "adprofity",
             "structureFile": "default.json",
             "bundler": true
         },
         {
-            "name": "asdf",
-            "dirName": "asdf",
+            "name": "jsonplaceholder",
+            "dirName": "jsonplaceholder",
             "structureFile": "default.json",
-            "bundler": false
+            "bundler": true
+        },
+        {
+            "name": "ecommerce/html",
+            "dirName": "ecommerce/html",
+            "structureFile": "default.json",
+            "bundler": true
+        },
+        {
+            "name": "Lorem Ipsum",
+            "dirName": "lorem",
+            "structureFile": "default.json",
+            "bundler": true
+        },
+        {
+            "name": "css-slider",
+            "dirName": "css-slider",
+            "structureFile": "default.json",
+            "bundler": true
+        },
+        {
+            "name": "nowajaga.pl",
+            "dirName": "nowajaga.pl",
+            "structureFile": "default.json",
+            "bundler": true
         }
     ],
-    "workspace": "test"
+    "workspace": "ButtonStudio.net_v2"
 }

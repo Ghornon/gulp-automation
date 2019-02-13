@@ -12,7 +12,6 @@ const chalk = require('chalk');
 const run = () => {
 
 	shell.exec('gulp default');
-
 };
 
 class Chooser {

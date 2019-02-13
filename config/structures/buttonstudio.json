@@ -1,61 +1,64 @@
 {
-
+	
 	"paths": {
-
+		
 		"input": {
-
+			
 			"js": "src/js",
 			"css": "src/css",
 			"img": "src/img",
 			"html": "/"
-
+			
 		},
 
 		"output": {
-
-			"js": "dist/js",
-			"css": "dist/css",
+			
+			"js": "dist",
+			"css": "dist",
 			"img": "dist/img",
 			"html": "/"
-
+			
 		}
-
-	},
-
+		
+	}, 
+	
 	"files": {
-
+		
 		"js": [
-			"*.js",
-			"!_*.js"
+			"bootstrap.js",
+			"Mail.js",
+			"Typing.js",
+			"Button.js",
+			"main.js"
 		],
-
+		
 		"css": [
-			"*.scss",
-			"!_*.scss",
-			"*/*.scss",
-			"*/!_*.scss"
+			"*.css",
+			"!_*.css",
+			"*.scss", 
+			"!_*.scss"
 		],
-
+		
 		"img": [
-			"*.png",
-			"*.jpg",
-			"*.jpeg",
+			"*.png", 
+			"*.jpg", 
+			"*.jpeg", 
 			"*.gif"
 		],
-
+				
 		"html": [
 			"**/*.html",
 			"**/*.php"
 		]
-
+			
 	},
-
+	
 	"bundle": {
 
 		"js": "bundle.js",
 		"css": "bundle.css",
 		"img": null,
-		"html": "index.html"
+		"html": "index.php"
 
 	}
 

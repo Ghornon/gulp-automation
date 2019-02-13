@@ -4,7 +4,7 @@ module.exports = (gulp, plugins, Stream, exception, Workspace) => {
 	const bundle = Workspace.bundle.js;
 
 	return () => {
-
+		
 		gulp.src(Stream.input('js')) // Create a stream in the directory where our js files are located.
 
 			.pipe(plugins.sourcemaps.init()) // Initialize source map.
